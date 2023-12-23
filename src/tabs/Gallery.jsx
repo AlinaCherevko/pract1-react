@@ -7,17 +7,38 @@ export class Gallery extends Component {
   state = {
     searchValue: '',
     photos: [],
+    page: 1,
+    isVisibleLoadMoreBtn: false,
   };
 
   async componentDidUpdate(_, prevState) {
-    if (this.state.searchValue !== prevState.searchValue) {
-      const { photos } = await ImageService.getImages(this.state.searchValue);
-      this.setState({ photos: makeNormalizedDataImg(photos) });
+    if (
+      this.state.searchValue !== prevState.searchValue ||
+      this.state.page !== prevState.page
+    ) {
+      const { photos, total_results, per_page } = await ImageService.getImages(
+        this.state.searchValue,
+        this.state.page
+      );
+      this.setState(prev => ({
+        photos: [...prev.photos, ...makeNormalizedDataImg(photos)],
+        isVisibleLoadMoreBtn:
+          this.state.page < Math.ceil(total_results / per_page),
+      }));
     }
   }
 
   onSubmit = searchValue => {
-    this.setState({ searchValue });
+    this.setState({
+      searchValue,
+      photos: [],
+      page: 1,
+      isVisibleLoadMoreBtn: false,
+    });
+  };
+
+  handleClickOnBtn = () => {
+    this.setState(prev => ({ page: prev.page + 1 }));
   };
   render() {
     return (
@@ -34,7 +55,9 @@ export class Gallery extends Component {
             ))}
           </Grid>
         )}
-        <Button>Load more</Button>
+        {this.state.isVisibleLoadMoreBtn && (
+          <Button onClick={this.handleClickOnBtn}>Load more</Button>
+        )}
 
         {this.state.photos.length === 0 && (
           <Text textAlign="center">Sorry. There are no images ... 😭</Text>
