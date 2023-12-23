@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { makeNormalizedDataImg } from 'helpers/normalize-data-img';
 import * as ImageService from 'service/image-service';
 import { Button, SearchForm, Grid, GridItem, Text, CardItem } from 'components';
+import { ImgModal } from 'components/Modal/Modal';
 
 export class Gallery extends Component {
   state = {
@@ -34,12 +35,24 @@ export class Gallery extends Component {
       photos: [],
       page: 1,
       isVisibleLoadMoreBtn: false,
+      large: '',
+      alt: '',
+      isShowModal: false,
     });
   };
 
   handleClickOnBtn = () => {
     this.setState(prev => ({ page: prev.page + 1 }));
   };
+
+  handleImgClick = (large, alt) => {
+    this.setState({ large, alt, isShowModal: true });
+  };
+
+  onModalClose = () => {
+    this.setState({ isShowModal: false });
+  };
+
   render() {
     return (
       <>
@@ -49,7 +62,11 @@ export class Gallery extends Component {
             {this.state.photos.map(({ medium, large, alt, id, avg_color }) => (
               <GridItem key={id}>
                 <CardItem color={avg_color}>
-                  <img src={medium} alt={alt} />
+                  <img
+                    onClick={() => this.handleImgClick(large, alt)}
+                    src={medium}
+                    alt={alt}
+                  />
                 </CardItem>
               </GridItem>
             ))}
@@ -62,6 +79,12 @@ export class Gallery extends Component {
         {this.state.photos.length === 0 && (
           <Text textAlign="center">Sorry. There are no images ... 😭</Text>
         )}
+        <ImgModal
+          large={this.state.large}
+          alt={this.state.alt}
+          isShowModal={this.state.isShowModal}
+          onModalClose={this.onModalClose}
+        />
       </>
     );
   }
