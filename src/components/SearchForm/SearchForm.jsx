@@ -1,25 +1,24 @@
-import { Component } from 'react';
+import React from 'react';
 
 import { FiSearch } from 'react-icons/fi';
 import { FormBtn, InputSearch, SearchFormStyled } from './SearchForm.styled';
 import { Button } from 'components';
 
-export class SearchForm extends Component {
-  handleSubmit = e => {
+export const SearchForm = ({ onSubmit }) => {
+  const handleSubmit = e => {
     e.preventDefault();
-    const value = e.target.elements.text.value;
+    const { value } = e.target.elements.text;
 
-    this.props.onSubmit(value);
+    onSubmit(value);
+    e.target.reset();
   };
 
-  render() {
-    return (
-      <SearchFormStyled onSubmit={this.handleSubmit}>
-        <InputSearch name="text" />
-        <FormBtn>
-          <FiSearch />
-        </FormBtn>
-      </SearchFormStyled>
-    );
-  }
-}
+  return (
+    <SearchFormStyled onSubmit={handleSubmit}>
+      <InputSearch name="text" />
+      <FormBtn>
+        <FiSearch />
+      </FormBtn>
+    </SearchFormStyled>
+  );
+};
