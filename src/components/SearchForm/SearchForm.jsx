@@ -4,20 +4,29 @@ import { FiSearch } from 'react-icons/fi';
 import { FormBtn, InputSearch, SearchFormStyled } from './SearchForm.styled';
 import { Button } from 'components';
 
-export const SearchForm = ({ onSubmit }) => {
+export const SearchForm = ({ onSubmit, addNewTodo }) => {
   const handleSubmit = e => {
     e.preventDefault();
-    const { value } = e.target.elements.text;
+    const { value } = e.target.elements.search;
 
     onSubmit(value);
-    e.target.reset();
+    const formData = {
+      value,
+    };
+
+    e.currentTarget.reset();
   };
 
   return (
     <SearchFormStyled onSubmit={handleSubmit}>
-      <InputSearch name="text" />
-      <FormBtn>
-        <FiSearch />
+      <InputSearch
+        placeholder="What do you want to write?"
+        name="search"
+        required
+        autoFocus
+      />
+      <FormBtn type="submit">
+        <FiSearch size="16px" />
       </FormBtn>
     </SearchFormStyled>
   );
