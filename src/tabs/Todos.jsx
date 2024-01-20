@@ -1,36 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { nanoid } from 'nanoid';
 import { Grid, GridItem, SearchForm, EditForm, Text, Todo } from 'components';
+import { useDispatch, useSelector } from 'react-redux';
+import { addTodo, removeTodo } from 'redux/todo/todoSlice';
 
 export const Todos = () => {
-  const [todos, setTodos] = useState('');
+  const dispatch = useDispatch();
+  const todos = useSelector(store => store.todo.value);
 
-  useEffect(() => {
-    const todoData = JSON.parse(localStorage.getItem('todo'));
-    if (todoData !== 0) setTodos(todoData);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('todo', JSON.stringify(todos));
-  }, [todos]);
-
-  const handleSubmit = todos => {
+  const onSubmit = todos => {
     const finalTodos = {
       value: todos,
       id: nanoid(),
     };
     console.log(finalTodos);
-    setTodos(prevState => [...prevState, finalTodos]);
-    console.log(todos);
+
+    const action = addTodo(finalTodos);
+    dispatch(action);
   };
 
   const deleteTodo = id => {
-    setTodos(todos.filter(todo => todo.id !== id));
+    const action = removeTodo(id);
+    dispatch(action);
   };
 
   return (
     <>
-      <SearchForm onSubmit={handleSubmit} />
+      <SearchForm onSubmit={onSubmit} />
       <Grid>
         {Array.isArray(todos) &&
           todos.map((todo, index) => (

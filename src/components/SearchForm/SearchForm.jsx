@@ -3,6 +3,7 @@ import React from 'react';
 import { FiSearch } from 'react-icons/fi';
 import { FormBtn, InputSearch, SearchFormStyled } from './SearchForm.styled';
 import { Button } from 'components';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const SearchForm = ({ onSubmit, addNewTodo }) => {
   const handleSubmit = e => {
@@ -10,9 +11,6 @@ export const SearchForm = ({ onSubmit, addNewTodo }) => {
     const { value } = e.target.elements.search;
 
     onSubmit(value);
-    const formData = {
-      value,
-    };
 
     e.currentTarget.reset();
   };
