@@ -9,13 +9,30 @@ const regions = [
   { id: 'oceania', value: 'oceania', name: 'Oceania' },
 ];
 
-export const SearchForm = () => {
+export const SearchForm = ({ handleSelect }) => {
+  // const [value, setValue] = useState('');
+
+  const onSelectClick = async e => {
+    const { value } = e.currentTarget;
+
+    // console.log(value);
+    handleSelect(value);
+
+    // const countries = await fetchByRegion(value);
+    // setCountries(countries);
+  };
+
   return (
     <SearchFormStyled>
       <BtnSearch type="submit">
         <FiSearch size="16px" />
       </BtnSearch>
-      <Select aria-label="select" name="region" required>
+      <Select
+        aria-label="select"
+        name="region"
+        required
+        onChange={onSelectClick}
+      >
         <option selected disabled defaultValue="">
           Select a region and press enter
         </option>

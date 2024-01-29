@@ -27,7 +27,7 @@ export const Select = styled.select`
   transition: all 0.5s ease-in-out;
 
   padding-right: 40px;
-  color: #fff;
+  color: #987;
 
   cursor: pointer;
 `;
