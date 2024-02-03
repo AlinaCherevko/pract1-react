@@ -19,8 +19,12 @@ const todoSlice = createSlice({
     removeTodo(state, actions) {
       state.todo = state.todo.filter(contact => contact.id !== actions.payload);
     },
+    editTodo(state, action) {
+      state.todo = state.todo.map(item => item.id === action.payload.id ? action.payload : item);
+      
+    }
   },
 });
-export const { addTodo, removeTodo } = todoSlice.actions;
+export const { addTodo, removeTodo, editTodo } = todoSlice.actions;
 // Редюсер слайсу
 export const todoReducer = todoSlice.reducer;
