@@ -15,12 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeTodo } from 'store/todoReducer';
 
 export const App = () => {
-  const dispatch = useDispatch();
   const todos = useSelector(state => state.todo.todo);
-
-  const handleDelete = id => {
-    dispatch(removeTodo(id));
-  };
 
   return (
     <>
@@ -37,12 +32,7 @@ export const App = () => {
             {todos.length > 0 &&
               todos.map((todo, index) => (
                 <GridItem key={todo.id}>
-                  <Todo
-                    id={todo.id}
-                    text={todo.text}
-                    counter={index + 1}
-                    onClick={handleDelete}
-                  />
+                  <Todo id={todo.id} text={todo.text} counter={index + 1} />
                 </GridItem>
               ))}
           </Grid>
