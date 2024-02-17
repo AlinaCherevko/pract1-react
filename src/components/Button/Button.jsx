@@ -2,14 +2,17 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import React from "react";
 import styles from "./Button.module.css";
+import { useUpdateCommentByIdMutation } from "../../redux/commentApi";
 
 export const Button = ({ children, counter, role = "thumbsUp", id }) => {
+  const [updateComment, isError, isSuccess] = useUpdateCommentByIdMutation();
   const variants = {
     [styles.thumbsUp]: role === "thumbsUp",
     [styles.thumbsDown]: role === "thumbsDown",
   };
 
   const onBtnHandleClick = () => {
+    updateComment({ id, [role]: counter + 1 });
     // console.log('click');
   };
 
